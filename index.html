@@ -60,13 +60,17 @@
         frameworkUrl: "Build/undadasea.framework.js.unityweb",
         codeUrl: "Build/undadasea.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
+        companyName: "BTG",
         productName: "undadasea",
         productVersion: "0.01",
         // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
         // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
-      }).then(() => {
+      }).then((unityInstance) => {
         spinner.style.display = 'none';
         canvas.style.display = 'block';
+        window.addEventListener('deviceorientation', function(event) {
+          event && event.gamma && unityInstance.SendMessage('GyroController', 'SetInput', event.gamma.toString());
+        });
       });
 
       const minAspect = 9 / 21;
