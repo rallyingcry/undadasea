@@ -70,7 +70,7 @@
         canvas.style.display = 'block';
         var subscribeToDeviceOrientation = () => {
           window.addEventListener('deviceorientation', function(event) {
-            event && event.gamma !== undefined && unityInstance.SendMessage('GyroController', 'SetInput', event.gamma.toString());
+            event && event.gamma != null && unityInstance.SendMessage('GyroController', 'SetInput', event.gamma);
           });
         }
         if (typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission === "function") {
