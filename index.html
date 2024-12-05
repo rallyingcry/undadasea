@@ -68,9 +68,20 @@
       }).then((unityInstance) => {
         spinner.style.display = 'none';
         canvas.style.display = 'block';
-        window.addEventListener('deviceorientation', function(event) {
-          event && event.gamma && unityInstance.SendMessage('GyroController', 'SetInput', event.gamma.toString());
-        });
+        var subscribeToDeviceOrientation = () => {
+          window.addEventListener('deviceorientation', function(event) {
+            event && event.gamma !== undefined && unityInstance.SendMessage('GyroController', 'SetInput', event.gamma.toString());
+          });
+        }
+        if (typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission === "function") {
+          DeviceOrientationEvent.requestPermission().then((response) => {
+            if (response === "granted") {
+                subscribeToDeviceOrientation();
+            }
+          })
+        } else {
+            subscribeToDeviceOrientation();
+        }
       });
 
       const minAspect = 9 / 21;
