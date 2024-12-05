@@ -51,23 +51,7 @@
     </div>
     <script src="Build/undadasea.loader.js"></script>
     <script>
-      if (typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission === "function") {
-        document.addEventListener(
-          "touchstart",
-          () => {
-            DeviceOrientationEvent.requestPermission().then((response) => {
-              if (response === "granted") {
-                startGame();
-              }
-            });
-          },
-          { once: true }
-        );
-      } else {
-        startGame();
-      }
-
-      startGame = () => {
+      function startGame() {
         const canvas = document.querySelector("#unity-canvas");
         const spinner = document.querySelector('.spinner-container');
 
@@ -110,8 +94,23 @@
         }
 
         window.addEventListener('resize', resizeCanvas);
-
         resizeCanvas();
+      }
+
+      if (typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission === "function") {
+        document.addEventListener(
+          "touchstart",
+          () => {
+            DeviceOrientationEvent.requestPermission().then((response) => {
+              if (response === "granted") {
+                startGame();
+              }
+            });
+          },
+          { once: true }
+        );
+      } else {
+        startGame();
       }
     </script>
   </body>
