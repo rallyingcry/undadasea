@@ -125,19 +125,14 @@
           () => {
             DeviceOrientationEvent.requestPermission()
               .then((response) => {
-                alert("success: " + response);
                 if (response === "granted") {
                   startGame();
                 }
               })
-              .catch((err) => {
-                alert("error: " + err);
-              });
           },
           { once: true }
         );
       } else {
-        alert("skip");
         startGame();
       }
     </script>
