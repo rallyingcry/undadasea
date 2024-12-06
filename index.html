@@ -18,14 +18,14 @@
         overflow: hidden;
       }
 
-      .spinner-container {
+      #spinner-container {
         margin: auto;
         position: relative;
         width: 100px;
         height: 100px;
       }
 
-      .spinner {
+      #spinner {
         width: 100px;
         height: 100px;
         border: 10px solid rgba(255, 255, 255, 0.2);
@@ -42,18 +42,38 @@
           transform: rotate(360deg);
         }
       }
+      
+      #permission-button {
+        padding: 15px 30px;
+        font-size: 18px;
+        color: white;
+        background-color: #4CAF50;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      #permission-button:active {
+          background-color: #3e8e41;
+      }
     </style>
   </head>
   <body>
     <canvas id="unity-canvas" tabindex="-1" style="display: none; margin: auto"></canvas>
-    <div class="spinner-container">
-      <div class="spinner"></div>
+    <div id="spinner-container" style="display: none">
+      <div id="spinner"></div>
     </div>
+    <button id="permission-button">START</button>
     <script src="Build/undadasea.loader.js"></script>
     <script>
+      const canvas = document.querySelector("#unity-canvas");
+      const spinner = document.querySelector('#spinner-container');
+      const button = document.querySelector("#permission-button");
+
       function startGame() {
-        const canvas = document.querySelector("#unity-canvas");
-        const spinner = document.querySelector('.spinner-container');
+        button.style.display = 'none';
+        spinner.style.display = 'block';
 
         createUnityInstance(canvas, {
           arguments: [],
@@ -97,9 +117,11 @@
         resizeCanvas();
       }
 
-      if (typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission === "function") {
-        document.addEventListener(
-          "touchstart",
+      if (typeof DeviceOrientationEvent !== "undefined"
+          && typeof DeviceOrientationEvent.requestPermission === "function"
+          && DeviceOrientationEvent.permission !== "granted") {
+        button.addEventListener(
+          "click",
           () => {
             DeviceOrientationEvent.requestPermission()
               .then((response) => {
